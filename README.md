@@ -26,3 +26,15 @@ optional arguments:
   -d date, --date date  the date to apply to the conversion in YYYY-MM-DD
                         format. default: today
 ```
+
+## Contribute
+
+Contributions are very welcome. Please create an issue detailing your idea so I can take a look and comment on it before you do any work. Once we agree that it's a great idea that fits into this project, you an fork the code, add your feature, and create a PR. 
+
+Here are some possible ideas that might be fun to implement:
+
+- Improve documentation in README.md
+- Add a list of currency abbreviations to `--help` menu
+- Add option to use emojis as CLI flags (e.g. :calendar: instead of `-d`) 
+- Expand the functionality (ideas welcome!)
+
