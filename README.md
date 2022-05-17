@@ -11,20 +11,20 @@ Helpful if you need to know how much a certain currency was worth in another cur
 ## Usage
 
 ```
-usage: convert [-h] [-o output_currency] [-d date] amount input_currency
+usage: convert [-h] [-i input_currency] [-o output_currency] [-d date] amount
 
 Convert between currencies at a specific date. Defaults to converting to Euro at today's date
 
 positional arguments:
   amount                the amount to convert
-  input_currency        the original currency as 3-letter code
 
-optional arguments:
+options:
   -h, --help            show this help message and exit
+  -i input_currency, --input input_currency
+                        the original currency as 3-letter code. default: USD
   -o output_currency, --output output_currency
                         the output currency as 3-letter code. default: EUR
-  -d date, --date date  the date to apply to the conversion in YYYY-MM-DD
-                        format. default: today
+  -d date, --date date  the date to apply to the conversion in YYYY-MM-DD format. default: today
 ```
 
 ## Contribute
@@ -34,6 +34,7 @@ Contributions are very welcome. Please create an issue detailing your idea so I 
 Here are some possible ideas that might be fun to implement:
 
 - Improve documentation in README.md
+- Connect `exchange-rates.py` so that dates out of range fetch new data from the web
 - Add a list of currency abbreviations to `--help` menu
 - Add option to use emojis as CLI flags (e.g. :calendar: instead of `-d`) 
 - Expand the functionality (ideas welcome!)
