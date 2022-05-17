@@ -1,45 +1,58 @@
 import argparse
-import json
-import os
-import sys
-import urllib.request
+import csv
+from datetime import date
 
 
-base_URL = "https://api.exchangeratesapi.io"
+FILENAME = "USD-EUR.csv"
 
-# set up argument parsing
-my_parser = argparse.ArgumentParser(prog='convert',
-                                    description='Convert between currencies at a specific date.\nDefaults to converting to Euro at today\'s date',
-                                    epilog='Happy calculating 🧮')
-# Add the arguments
-my_parser.add_argument('Amount',
-                       metavar='amount',
-                       type=float,
-                       help='the amount to convert')
-my_parser.add_argument('InCurrency',
-                       metavar='input_currency',
-                       type=str,
-                       help='the original currency as 3-letter code')
-my_parser.add_argument('-o',
-                       '--output',
-                       metavar='output_currency',
-                       type=str,
-                       default='EUR',
-                       help='the output currency as 3-letter code. default: EUR')
-my_parser.add_argument('-d',
-                       '--date',
-                       metavar='date',
-                       type=str,
-                       default='latest',
-                       help='the date to apply to the conversion in YYYY-MM-DD format. default: today')
+currency_parser = argparse.ArgumentParser(
+    prog="convert",
+    description="Convert between currencies at a specific date.\nDefaults to converting to Euro at today's date",
+    epilog="Happy calculating 🧮",
+)
+currency_parser.add_argument(
+    "amount", metavar="amount", type=float, help="the amount to convert"
+)
+currency_parser.add_argument(
+    "-i",
+    "--input",
+    metavar="input_currency",
+    type=str,
+    default="USD",
+    help="the original currency as 3-letter code. default: USD",
+)
+currency_parser.add_argument(
+    "-o",
+    "--output",
+    metavar="output_currency",
+    type=str,
+    default="EUR",
+    help="the output currency as 3-letter code. default: EUR",
+)
+currency_parser.add_argument(
+    "-d",
+    "--date",
+    metavar="date",
+    type=str,
+    default=str(date.today()),
+    help="the date to apply to the conversion in YYYY-MM-DD format. default: today",
+)
 
-args = my_parser.parse_args()
+args = currency_parser.parse_args()
 
-# fetch the conversion rate
-url = f'{base_URL}/{args.date}?base={args.InCurrency}&symbols={args.output}'
-r = urllib.request.urlopen(url)
-data = json.loads(r.read().decode(r.info().get_param('charset') or 'utf-8'))
+rates = dict()
+
+with open(FILENAME, "r") as csv_file:
+    conversion_rates_reader = csv.DictReader(csv_file)
+    for row in conversion_rates_reader:
+        rates.update({row["date"]: float(row["rate_USD_EUR"])})
+
 
 # calculate the new amount
-amount_converted = args.Amount * data['rates'][args.output]
-print(f"{amount_converted:.2f} {args.output} ({data['date']})")
+rate_at_date = rates.get(args.date, None)
+if rate_at_date:
+    amount_converted = args.amount * rate_at_date
+else:
+    # TODO: run pipeline in exchange-rates.py to fetch fresh currency data
+    raise NotImplementedError("Rate for specified date not available. Pulling fresh rates is not yet implemented.")
+print(f"{amount_converted:.2f} {args.output} ({args.date})")

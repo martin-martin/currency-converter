@@ -1,6 +1,6 @@
 # CLI Currency Converter
 
-A lightweight command-line interface to calculate currency conversions for specific dates using Python 3 and the [exchangeratesapi.io](https://exchangeratesapi.io/).
+A lightweight command-line interface to calculate currency conversions for specific dates using Python 3 and exchange rate information from the [European Central Bank](https://www.ecb.europa.eu/home/html/index.en.html).
 
 ![Example conversion process GIF](convert.gif)
 
@@ -37,4 +37,3 @@ Here are some possible ideas that might be fun to implement:
 - Add a list of currency abbreviations to `--help` menu
 - Add option to use emojis as CLI flags (e.g. :calendar: instead of `-d`) 
 - Expand the functionality (ideas welcome!)
-
